@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "824589372707",
+    "project_id": "student-record-managemen-ec99c",
+    "storage_bucket": "student-record-managemen-ec99c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824589372707:android:3b7a59c952b4fcba2a5096",
+        "android_client_info": {
+          "package_name": "com.example.student_record_mangement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824589372707-dgqb8tbn9fb13kp8kgql7kpvc6in1j3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdondHn8yCRgFIWsAndtlkS9fVm0BFBZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824589372707-dgqb8tbn9fb13kp8kgql7kpvc6in1j3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
