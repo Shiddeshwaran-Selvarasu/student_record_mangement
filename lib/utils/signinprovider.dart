@@ -1,15 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class EmailSignIn extends ChangeNotifier {
-  void _showToast(String text) {
+  void _showToast(String text,bool isError) {
+    String color = isError ? "#ff3333":"#4caf50";
     Fluttertoast.showToast(
       msg: text,
-      backgroundColor: Colors.greenAccent,
-      webBgColor: const Color(0xFFE8F5E9),
+      backgroundColor: isError ? Colors.red : Colors.green,
+      webBgColor: color,
       gravity: ToastGravity.BOTTOM,
       toastLength: Toast.LENGTH_LONG,
       timeInSecForIosWeb: 2,
@@ -32,7 +32,7 @@ class EmailSignIn extends ChangeNotifier {
   Future<void> loginWithEmailPassword(String email, String password) async {
     var connectionStatus = await Connectivity().checkConnectivity();
     if (connectionStatus == ConnectivityResult.none) {
-      _showToast('No Internet! Check your connection');
+      _showToast('No Internet! Check your connection',true);
       return;
     }
 
@@ -43,12 +43,12 @@ class EmailSignIn extends ChangeNotifier {
         email: email,
         password: password,
       );
-      _showToast('Identity Verified. Logging in..');
+      _showToast('Identity Verified. Logging in..',false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        _showToast('No user found for the given email.');
+        _showToast('No user found for the given email.',true);
       } else if (e.code == 'wrong-password') {
-        _showToast('Wrong password');
+        _showToast('Wrong password',true);
       }
     }
 

@@ -16,9 +16,14 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,17 +34,17 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
       ),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.green,
           brightness: Brightness.dark,
         ),
+        brightness: Brightness.dark,
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
         body: ChangeNotifierProvider(
           create: (context) => EmailSignIn(),
           child: StreamBuilder(

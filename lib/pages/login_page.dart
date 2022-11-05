@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:student_record_mangement/utils/signinprovider.dart';
@@ -83,7 +84,9 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 25),
               child: ElevatedButton(
                 onPressed: () {
-                  provider.loginWithEmailPassword(email.value.text, password.value.text);
+                  if((emailError == null || email.value.text == '') && (passError == null || password.value.text == '')){
+                    provider.loginWithEmailPassword(email.value.text, password.value.text);
+                  }
                 },
                 child: const Text('Login'),
               ),
