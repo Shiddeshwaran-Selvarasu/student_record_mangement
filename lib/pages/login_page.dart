@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:student_record_mangement/model/user_models.dart';
 import 'package:student_record_mangement/utils/signinprovider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -88,6 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                     provider.loginWithEmailPassword(email.value.text, password.value.text);
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.primaryContainer,
+                ),
                 child: const Text('Login'),
               ),
             ),
