@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:student_record_mangement/model/user_models.dart';
 import 'package:student_record_mangement/utils/signinprovider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -86,7 +86,13 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 onPressed: () {
                   if((emailError == null || email.value.text == '') && (passError == null || password.value.text == '')){
-                    provider.loginWithEmailPassword(email.value.text, password.value.text);
+                    provider.loginWithEmailPassword(email.value.text, password.value.text).then((value){
+                      FirebaseFirestore.instance.collection('/users').doc(email.value.text).get().then((value){
+                        if(!value.exists){
+                          FirebaseAuth.instance.currentUser!.delete();
+                        }
+                      });
+                    });
                   }
                 },
                 style: ElevatedButton.styleFrom(

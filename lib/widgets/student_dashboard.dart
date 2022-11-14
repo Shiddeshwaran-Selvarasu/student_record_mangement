@@ -177,25 +177,25 @@ class _StudentDashboardState extends State<StudentDashboard> {
                       DataRow(
                         cells: [
                           const DataCell(Text('Roll No')),
-                          DataCell(Text(student.rollNo ?? '-'))
+                          DataCell(Text(student.rollNo))
                         ],
                       ),
                       DataRow(
                         cells: [
                           const DataCell(Text('Email')),
-                          DataCell(Text(student.email ?? '-'))
+                          DataCell(Text(student.email))
                         ],
                       ),
                       DataRow(
                         cells: [
                           const DataCell(Text('Degree')),
-                          DataCell(Text(student.degree ?? '-'))
+                          DataCell(Text(student.degree))
                         ],
                       ),
                       DataRow(
                         cells: [
                           const DataCell(Text('Department')),
-                          DataCell(Text(student.dept ?? '-'))
+                          DataCell(Text(student.dept))
                         ],
                       ),
                       DataRow(
@@ -208,16 +208,14 @@ class _StudentDashboardState extends State<StudentDashboard> {
                         cells: [
                           const DataCell(Text('Date Of Birth')),
                           DataCell(
-                            Text(student.dateOfBirth == null
-                                ? "-"
-                                : student.dateOfBirth!.toDate().toString()),
+                            Text(student.dateOfBirth ?? "-" ),
                           ),
                         ],
                       ),
                       DataRow(
                         cells: [
                           const DataCell(Text('Year')),
-                          DataCell(Text(student.academicYear ?? '-'))
+                          DataCell(Text(student.academicYear))
                         ],
                       ),
                       DataRow(
@@ -253,7 +251,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                       DataRow(
                         cells: [
                           const DataCell(Text('Tutor Email')),
-                          DataCell(Text(student.tutorEmail ?? '-'))
+                          DataCell(Text(student.tutorEmail))
                         ],
                       ),
                     ],

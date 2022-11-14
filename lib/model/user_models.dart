@@ -1,39 +1,21 @@
 import 'dart:collection';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Student extends LinkedListEntry<Student>{
   final String rollNo;
-  final String? name;
+  String? name;
   final String email;
   final String degree;
   final String dept;
   final String academicYear;
-  final Timestamp? dateOfBirth;
-  final String? address;
-  final String? mobile;
-  final String? fatherName;
-  final String? motherName;
-  final String? fatherMobile;
-  final String? motherMobile;
+  String? dateOfBirth;
+  String? address;
+  String? mobile;
+  String? fatherName;
+  String? motherName;
+  String? fatherMobile;
+  String? motherMobile;
   final String tutorEmail;
-
-  // Student({
-  //   required this.rollNo,
-  //   required this.name,
-  //   required this.email,
-  //   required this.degree,
-  //   required this.dept,
-  //   required this.academicYear,
-  //   required this.dateOfBirth,
-  //   required this.address,
-  //   required this.mobile,
-  //   required this.fatherName,
-  //   required this.motherName,
-  //   required this.fatherMobile,
-  //   required this.motherMobile,
-  //   required this.tutorEmail,
-  // });
 
   Student({
     required this.rollNo,
@@ -52,14 +34,10 @@ class Student extends LinkedListEntry<Student>{
     required this.tutorEmail,
   });
 
-  int getAge() {
-    return dateOfBirth == null ? -1 : (DateTime.now().year - dateOfBirth!.toDate().year);
-  }
-
   @override
   String toString() {
     return "Roll No: $rollNo\n Name: $name\n Email: $email\n Degree & Department: $degree - $dept\n "
-        "Academy Year: $academicYear\n Age: ${getAge()}\n Address: $address\n Mobile: $mobile\n Tutor: $tutorEmail\n";
+        "Academy Year: $academicYear\n Age: $dateOfBirth\n Address: $address\n Mobile: $mobile\n Tutor: $tutorEmail\n";
   }
 }
 
@@ -105,4 +83,33 @@ class Tutor {
     required this.mobile,
     required this.students,
   });
+}
+
+class StudentEmail extends LinkedListEntry<StudentEmail> {
+  final String email;
+  StudentEmail({required this.email});
+
+  @override
+  String toString() {
+    return email;
+  }
+}
+
+class TextFieldHelper {
+  final TextEditingController _controller = TextEditingController();
+  String? _error;
+
+  String get text => _controller.value.text;
+
+  TextEditingController get controller => _controller;
+
+  String? get error => _error;
+
+  set error(String? value) {
+    _error = value;
+  }
+
+  void initialValue(String? value) {
+    _controller.text = value ?? "";
+  }
 }

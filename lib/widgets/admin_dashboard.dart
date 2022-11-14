@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +80,77 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
+  showAlertDelete(var student) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          title: Row(
+            children: const [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red,
+                size: 25,
+              ),
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: Text("Delete?"),
+              ),
+            ],
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          content: Text("Are sure you want to delete $student?"),
+          actionsAlignment: MainAxisAlignment.end,
+          elevation: 5,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextButton(
+                  onPressed: () {
+                    FirebaseFirestore.instance
+                        .collection('/users')
+                        .doc(student.toString())
+                        .delete();
+                    FirebaseFirestore.instance
+                        .collection('/admin')
+                        .doc(widget.user.email)
+                        .update({
+                      'teachers': FieldValue.arrayRemove([student.toString()]),
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "Delete",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<EmailSignIn>(context, listen: false);
@@ -108,8 +181,15 @@ class _AdminDashboardState extends State<AdminDashboard> {
           }
 
           if (snapshot.hasData) {
-            List<dynamic> students = [];
-            students.addAll(snapshot.data!.data()!['teachers']);
+            LinkedList<StudentEmail> students = LinkedList();
+            final list = snapshot.data!.data()!['teachers'];
+            for (var ele in list) {
+              students.add(
+                StudentEmail(
+                  email: ele.toString(),
+                ),
+              );
+            }
             return Scrollbar(
               child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -117,14 +197,17 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   itemCount: students.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 5),
                       child: Card(
                         elevation: 2,
                         child: ListTile(
-                          title: Text(students[index].toString()),
+                          title: Text(students.elementAt(index).toString()),
                           trailing: IconButton(
-                            onPressed: (){},
+                            onPressed: () {
+                              showAlertDelete(
+                                  students.elementAt(index).toString());
+                            },
                             icon: const Icon(Icons.delete),
                           ),
                         ),
@@ -143,7 +226,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddTeacher(adminEmail: widget.user.email)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddTeacher(email: widget.user.email)));
         },
         child: const Icon(Icons.add),
       ),
