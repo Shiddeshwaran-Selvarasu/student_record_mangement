@@ -19,12 +19,14 @@ class _AddStudentState extends State<AddStudent> {
   final TextEditingController _degree = TextEditingController();
   final TextEditingController _dept = TextEditingController();
   final TextEditingController _academicYear = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   String? _rollNoError;
   String? _emailError;
   String? _degreeError;
   String? _deptError;
   String? _academicYearError;
+  String? _passError;
 
   bool isLoading = false;
 
@@ -44,8 +46,7 @@ class _AddStudentState extends State<AddStudent> {
     try {
       UserCredential userCredential = await FirebaseAuth.instanceFor(app: app)
           .createUserWithEmailAndPassword(email: email, password: password);
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       _showToast('UserCreation Failed try again');
     }
 
@@ -58,42 +59,49 @@ class _AddStudentState extends State<AddStudent> {
         _degree.value.text.isNotEmpty &&
         _dept.value.text.isNotEmpty &&
         _academicYear.value.text.isNotEmpty) {
-      setState(() {
-        isLoading = true;
-      });
-      Future.delayed(
-        const Duration(seconds: 2),
-      );
-      FirebaseFirestore.instance.doc('/teacher/${widget.tutorEmail}').update({
-        'students': FieldValue.arrayUnion([_email.value.text.trim()]),
-      });
-      FirebaseFirestore.instance
-          .collection('/users')
-          .doc(_email.value.text.trim())
-          .set({
-        'name': '-',
-        'email': _email.value.text,
-        'role': 'student',
-      });
-      FirebaseFirestore.instance
-          .collection('/student')
-          .doc(_email.value.text.trim())
-          .set({
-        'name': '-',
-        'email': _email.value.text,
-        'rollNo': _rollNo.value.text,
-        'degree': _degree.value.text,
-        'dept': _dept.value.text,
-        'academicYear': _academicYear.value.text,
-        'tutorEmail': widget.tutorEmail,
-      });
-      createUser(_email.value.text,_rollNo.value.text);
-      _rollNo.clear();
-      _email.clear();
-      _showToast('Student created...');
-      setState(() {
-        isLoading = false;
-      });
+      if (_password.value.text.length >= 8) {
+        setState(() {
+          isLoading = true;
+        });
+        Future.delayed(
+          const Duration(seconds: 2),
+        );
+        FirebaseFirestore.instance.doc('/teacher/${widget.tutorEmail}').update({
+          'students': FieldValue.arrayUnion([_email.value.text.trim()]),
+        });
+        FirebaseFirestore.instance
+            .collection('/users')
+            .doc(_email.value.text.trim())
+            .set({
+          'name': '-',
+          'email': _email.value.text,
+          'role': 'student',
+        });
+        FirebaseFirestore.instance
+            .collection('/student')
+            .doc(_email.value.text.trim())
+            .set({
+          'name': '-',
+          'email': _email.value.text,
+          'rollNo': _rollNo.value.text,
+          'degree': _degree.value.text,
+          'dept': _dept.value.text,
+          'academicYear': _academicYear.value.text,
+          'tutorEmail': widget.tutorEmail,
+        });
+        createUser(_email.value.text, _rollNo.value.text);
+        _rollNo.clear();
+        _email.clear();
+        _showToast('Student created...');
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          _passError = 'Password Should have minimum 8 digits';
+        });
+        _showToast('Password Should have minimum 8 digits');
+      }
     } else {
       _showToast('All fields should have value!');
     }
@@ -232,6 +240,23 @@ class _AddStudentState extends State<AddStudent> {
                             hintText: 'Enter Academic Year',
                             label: const Text('Academic Year'),
                             errorText: _academicYearError,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 15,
+                        ),
+                        child: TextField(
+                          controller: _password,
+                          decoration: InputDecoration(
+                            hintText: 'Enter Password',
+                            label: const Text('Password'),
+                            errorText: _passError,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
