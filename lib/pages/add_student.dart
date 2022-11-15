@@ -89,7 +89,7 @@ class _AddStudentState extends State<AddStudent> {
           'academicYear': _academicYear.value.text,
           'tutorEmail': widget.tutorEmail,
         });
-        createUser(_email.value.text, _rollNo.value.text);
+        createUser(_email.value.text, _password.value.text);
         _rollNo.clear();
         _email.clear();
         _showToast('Student created...');
