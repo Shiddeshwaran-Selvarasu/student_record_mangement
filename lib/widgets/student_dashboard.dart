@@ -16,7 +16,7 @@ class StudentDashboard extends StatefulWidget {
 }
 
 class _StudentDashboardState extends State<StudentDashboard> {
-  showAlert(var provider) {
+  showAlert(var provider, var context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -35,9 +35,13 @@ class _StudentDashboardState extends State<StudentDashboard> {
               ),
             ],
           ),
+          actionsPadding: const EdgeInsets.all(5),
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          content: const Text("Are sure you want to log out?"),
+              const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: const Text(
+            "Are sure you want to log out?",
+            style: TextStyle(fontSize: 17),
+          ),
           actionsAlignment: MainAxisAlignment.end,
           elevation: 5,
           actions: [
@@ -90,7 +94,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            showAlert(provider);
+            showAlert(provider, context);
           },
           icon: const Icon(Icons.logout),
         ),
@@ -208,7 +212,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                         cells: [
                           const DataCell(Text('Date Of Birth')),
                           DataCell(
-                            Text(student.dateOfBirth ?? "-" ),
+                            Text(student.dateOfBirth ?? "-"),
                           ),
                         ],
                       ),

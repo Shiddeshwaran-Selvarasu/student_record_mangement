@@ -176,6 +176,7 @@ class _AddStudentState extends State<AddStudent> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          keyboardType: TextInputType.text,
                         ),
                       ),
                       Padding(
@@ -185,6 +186,7 @@ class _AddStudentState extends State<AddStudent> {
                         ),
                         child: TextField(
                           controller: _email,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             hintText: 'Enter Email',
                             label: const Text('Email'),
@@ -202,6 +204,7 @@ class _AddStudentState extends State<AddStudent> {
                         ),
                         child: TextField(
                           controller: _degree,
+                          keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             hintText: 'Enter Degree',
                             label: const Text('Degree'),
@@ -219,6 +222,7 @@ class _AddStudentState extends State<AddStudent> {
                         ),
                         child: TextField(
                           controller: _dept,
+                          keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             hintText: 'Enter Department',
                             label: const Text('Department'),
@@ -236,6 +240,7 @@ class _AddStudentState extends State<AddStudent> {
                         ),
                         child: TextField(
                           controller: _academicYear,
+                          keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             hintText: 'Enter Academic Year',
                             label: const Text('Academic Year'),
@@ -253,6 +258,7 @@ class _AddStudentState extends State<AddStudent> {
                         ),
                         child: TextField(
                           controller: _password,
+                          keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             hintText: 'Enter Password',
                             label: const Text('Password'),

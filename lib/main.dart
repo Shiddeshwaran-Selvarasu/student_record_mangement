@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.greenAccent,
+          seedColor: Colors.blueAccent,
           brightness: Brightness.light,
         ),
       ),
@@ -38,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
+          seedColor: Colors.blue,
           brightness: Brightness.dark,
         ),
         brightness: Brightness.dark,
@@ -58,7 +60,7 @@ class _MyAppState extends State<MyApp> {
               } else if (snapshot.hasData) {
                 return const HomePage();
               } else {
-                return const LoginPage();
+                return LoginPage(random: (Random().nextInt(4)+1));
               }
             },
           ),

@@ -152,6 +152,8 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Name',
                       label: const Text('Name'),
                     ),
+                    keyboardType: TextInputType.name,
+                    autofillHints: const [AutofillHints.name],
                     onChanged: (text){
                       student.name = text;
                     },
@@ -171,6 +173,8 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Mobile',
                       label: const Text('Mobile'),
                     ),
+                    keyboardType: TextInputType.phone,
+                    autofillHints: const [AutofillHints.telephoneNumber],
                     onChanged: (text){
                       student.mobile = text;
                     },
@@ -190,6 +194,8 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Date of Birth in DD-MM-YYYY format',
                       label: const Text('Date Of Birth'),
                     ),
+                    keyboardType: TextInputType.datetime,
+                    autofillHints: const [AutofillHints.birthday],
                     onChanged: (text){
                       student.dateOfBirth = text;
                     },
@@ -211,6 +217,8 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter address',
                       label: const Text('Address'),
                     ),
+                    keyboardType: TextInputType.streetAddress,
+                    autofillHints: const [AutofillHints.fullStreetAddress],
                     onChanged: (text){
                       student.address = text;
                     },
@@ -230,6 +238,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Father Name',
                       label: const Text('Father Name'),
                     ),
+                    keyboardType: TextInputType.name,
                     onChanged: (text){
                       student.fatherName = text;
                     },
@@ -249,6 +258,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Father Mobile',
                       label: const Text('Father Mobile'),
                     ),
+                    keyboardType: TextInputType.phone,
                     onChanged: (text){
                       student.fatherName = text;
                     },
@@ -268,6 +278,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Mother Name',
                       label: const Text('Mother Name'),
                     ),
+                    keyboardType: TextInputType.name,
                     onChanged: (text){
                       student.motherName = text;
                     },
@@ -287,6 +298,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       hintText: 'Enter Mother Mobile',
                       label: const Text('Mother Mobile'),
                     ),
+                    keyboardType: TextInputType.phone,
                     onChanged: (text){
                       student.motherMobile = text;
                     },

@@ -24,9 +24,8 @@ class TeacherDashboard extends StatefulWidget {
 }
 
 class _TeacherDashboardState extends State<TeacherDashboard> {
-
-  void _showToast(String text,bool isError) {
-    String color = isError ? "#ff3333":"#4caf50";
+  void _showToast(String text, bool isError) {
+    String color = isError ? "#ff3333" : "#4caf50";
     Fluttertoast.showToast(
       msg: text,
       backgroundColor: isError ? Colors.red : Colors.green,
@@ -37,7 +36,7 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
     );
   }
 
-  showAlert(var provider) {
+  showAlert(var provider, var context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -56,9 +55,13 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
               ),
             ],
           ),
+          actionsPadding: const EdgeInsets.all(5),
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          content: const Text("Are sure you want to log out?"),
+              const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: const Text(
+            "Are sure you want to log out?",
+            style: TextStyle(fontSize: 17),
+          ),
           actionsAlignment: MainAxisAlignment.end,
           elevation: 5,
           actions: [
@@ -99,13 +102,16 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
     );
   }
 
-  showAlertDelete(var student) {
+  showAlertDelete(var student, var context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.background,
           title: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: const [
               Icon(
                 Icons.warning_amber_rounded,
@@ -114,13 +120,17 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
               ),
               Padding(
                 padding: EdgeInsets.all(5),
-                child: Text("Delete?"),
+                child: Text(" Delete?"),
               ),
             ],
           ),
+          actionsPadding: const EdgeInsets.all(5),
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          content: Text("Are sure you want to delete $student?"),
+              const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Text(
+            "Are sure you want to delete the student with email $student ?",
+            style: const TextStyle(fontSize: 17),
+          ),
           actionsAlignment: MainAxisAlignment.end,
           elevation: 5,
           actions: [
@@ -198,38 +208,46 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
 
     List<Map<String, dynamic>> totalList = [];
     List<dynamic> idList = [];
-    await FirebaseFirestore.instance.collection('/teacher').doc(widget.user.email).get().then((value) {
+    await FirebaseFirestore.instance
+        .collection('/teacher')
+        .doc(widget.user.email)
+        .get()
+        .then((value) {
       idList = value.data()!['students'];
-    }).whenComplete((){
+    }).whenComplete(() {
       _showToast('Done', false);
-    }).onError((error, stackTrace){
+    }).onError((error, stackTrace) {
       _showToast(error.toString(), true);
     });
 
-    for(var i in idList){
-      await FirebaseFirestore.instance.collection('/student').doc(i).get().then((value){
+    for (var i in idList) {
+      await FirebaseFirestore.instance
+          .collection('/student')
+          .doc(i)
+          .get()
+          .then((value) {
         Map<String, dynamic> data = value.data()!;
         totalList.add(data);
       });
     }
 
-    for(int i = 0; i < totalList.length; i++){
+    for (int i = 0; i < totalList.length; i++) {
       var data = totalList[i];
-      sheet.getRangeByName('A${2+i}').setText('${1+i}');
-      sheet.getRangeByName('B${2+i}').setText(data['rollNo']??"-");
-      sheet.getRangeByName('C${2+i}').setText(data['name']??"-");
-      sheet.getRangeByName('D${2+i}').setText(data['email']??"-");
-      sheet.getRangeByName('E${2+i}').setText(data['degree']??"-");
-      sheet.getRangeByName('F${2+i}').setText(data['dept']??"-");
-      sheet.getRangeByName('G${2+i}').setText(data['academicYear']??"-");
-      sheet.getRangeByName('H${2+i}').setText(data['dateOfBirth']??"-");
-      sheet.getRangeByName('I${2+i}').setText(data['address']??"-");
-      sheet.getRangeByName('J${2+i}').setText(data['mobile']??"-");
-      sheet.getRangeByName('K${2+i}').setText(data['fatherName']??"-");
-      sheet.getRangeByName('K${2+i}').setText(data['fatherMobile']??"-");
-      sheet.getRangeByName('K${2+i}').setText(data['motherName']??"-");
-      sheet.getRangeByName('K${2+i}').setText(data['motherMobile']??"-");
-      sheet.getRangeByName('L${2+i}').setText(data['tutorEmail']??"-");
+      sheet.getRangeByName('A${2 + i}').setText('${1 + i}');
+      sheet.getRangeByName('B${2 + i}').setText(data['rollNo'] ?? "-");
+      sheet.getRangeByName('C${2 + i}').setText(data['name'] ?? "-");
+      sheet.getRangeByName('D${2 + i}').setText(data['email'] ?? "-");
+      sheet.getRangeByName('E${2 + i}').setText(data['degree'] ?? "-");
+      sheet.getRangeByName('F${2 + i}').setText(data['dept'] ?? "-");
+      sheet.getRangeByName('G${2 + i}').setText(data['academicYear'] ?? "-");
+      sheet.getRangeByName('H${2 + i}').setText(data['dateOfBirth'] ?? "-");
+      sheet.getRangeByName('I${2 + i}').setText(data['address'] ?? "-");
+      sheet.getRangeByName('J${2 + i}').setText(data['mobile'] ?? "-");
+      sheet.getRangeByName('K${2 + i}').setText(data['fatherName'] ?? "-");
+      sheet.getRangeByName('K${2 + i}').setText(data['fatherMobile'] ?? "-");
+      sheet.getRangeByName('K${2 + i}').setText(data['motherName'] ?? "-");
+      sheet.getRangeByName('K${2 + i}').setText(data['motherMobile'] ?? "-");
+      sheet.getRangeByName('L${2 + i}').setText(data['tutorEmail'] ?? "-");
     }
 
     // Save and dispose the document.
@@ -264,7 +282,7 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            showAlert(provider);
+            showAlert(provider, context);
           },
           icon: const Icon(Icons.logout),
         ),
@@ -315,7 +333,9 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
                           leading: IconButton(
                             onPressed: () {
                               showAlertDelete(
-                                  students.elementAt(index).toString());
+                                students.elementAt(index).toString(),
+                                context,
+                              );
                             },
                             icon: const Icon(Icons.delete),
                           ),

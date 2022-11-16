@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:student_record_mangement/utils/signinprovider.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({required this.random, Key? key}) : super(key: key);
+
+  final int random;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -20,11 +24,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<EmailSignIn>(context,listen: false);
+    final provider = Provider.of<EmailSignIn>(context, listen: false);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Login Page'),
+        title: const Text('Student Record Management'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -33,6 +38,12 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+              child: Image.asset('assets/images/${widget.random}.png'),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
             child: TextField(
@@ -42,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 errorText: emailError,
               ),
               keyboardType: TextInputType.emailAddress,
-              autofillHints: const [AutofillHints.email],
+              autofillHints: const [AutofillHints.username,AutofillHints.newUsername],
               onChanged: (text) {
                 setState(() {
                   if (EmailValidator.validate(text)) {
@@ -65,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
-              autofillHints: const [AutofillHints.newPassword],
+              autofillHints: const [AutofillHints.password,AutofillHints.newPassword],
               onChanged: (text) {
                 setState(() {
                   if (text.length >= 8) {
@@ -80,15 +91,23 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 90,
+            height: 95,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 25),
               child: ElevatedButton(
                 onPressed: () {
-                  if((emailError == null || email.value.text == '') && (passError == null || password.value.text == '')){
-                    provider.loginWithEmailPassword(email.value.text, password.value.text).then((value){
-                      FirebaseFirestore.instance.collection('/users').doc(email.value.text).get().then((value){
-                        if(!value.exists){
+                  if ((emailError == null || email.value.text == '') &&
+                      (passError == null || password.value.text == '')) {
+                    provider
+                        .loginWithEmailPassword(
+                            email.value.text, password.value.text)
+                        .then((value) {
+                      FirebaseFirestore.instance
+                          .collection('/users')
+                          .doc(email.value.text)
+                          .get()
+                          .then((value) {
+                        if (!value.exists) {
                           FirebaseAuth.instance.currentUser!.delete();
                         }
                       });

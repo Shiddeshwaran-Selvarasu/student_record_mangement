@@ -18,7 +18,7 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
-  showAlert(var provider) {
+  showAlert(var provider, var context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -37,9 +37,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
             ],
           ),
+          actionsPadding: const EdgeInsets.all(5),
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          content: const Text("Are sure you want to log out?"),
+              const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: const Text(
+            "Are sure you want to log out?",
+            style: TextStyle(fontSize: 17),
+          ),
           actionsAlignment: MainAxisAlignment.end,
           elevation: 5,
           actions: [
@@ -80,7 +84,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
-  showAlertDelete(var student) {
+  showAlertDelete(var student, var context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -99,9 +103,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
             ],
           ),
+          actionsPadding: const EdgeInsets.all(5),
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          content: Text("Are sure you want to delete $student?"),
+              const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Text(
+            "Are sure you want to delete the teacher with email $student ?",
+            style: const TextStyle(fontSize: 17),
+          ),
           actionsAlignment: MainAxisAlignment.end,
           elevation: 5,
           actions: [
@@ -163,7 +171,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            showAlert(provider);
+            showAlert(provider, context);
           },
           icon: const Icon(Icons.logout),
         ),
@@ -206,7 +214,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           trailing: IconButton(
                             onPressed: () {
                               showAlertDelete(
-                                  students.elementAt(index).toString());
+                                  students.elementAt(index).toString(),
+                                  context);
                             },
                             icon: const Icon(Icons.delete),
                           ),
